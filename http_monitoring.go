@@ -64,10 +64,6 @@ func newRequestDurationHistogram(appName string) *requestDurationHistogram {
 		[]string{string(statusCodeLabel), string(methodLabel), string(pathLabel), string(appNameLabel)},
 	)
 
-	prometheus.MustRegister(
-		histogramVec,
-	)
-
 	return &requestDurationHistogram{
 		appName: appName,
 		hist:    histogramVec,
