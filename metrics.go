@@ -1,38 +1,37 @@
 package metrics
 
 import (
-	"strconv"
-
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-type incomingRequestCounter struct {
-	appName string
-	*prometheus.CounterVec
-}
-
-func NewIncomingRequestCounter(appName string) incomingRequestCounter { //nolint: revive
+func NewCounterVec(name, desc string, labels []string) *prometheus.CounterVec {
 	counterVec := prometheus.NewCounterVec(
 		prometheus.CounterOpts{
-			Name: "rc_ml_http_requests_total",
-			Help: "Total number of incoming requests",
+			Name: name,
+			Help: desc,
 		},
-		[]string{"statusCode", "method", "path", "appName"},
+		labels,
 	)
 
 	prometheus.MustRegister(
 		counterVec,
 	)
 
-	return incomingRequestCounter{
-		appName:    appName,
-		CounterVec: counterVec,
-	}
+	return counterVec
 }
 
-func (c incomingRequestCounter) ObserveIncomingRequests(
-	statusCode int,
-	method, path string,
-) {
-	c.WithLabelValues(strconv.Itoa(statusCode), method, path, c.appName).Inc()
+func NewHistogramVec(name, desc string, labels []string) *prometheus.HistogramVec {
+	histogramVec := prometheus.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Name: name,
+			Help: desc,
+		},
+		labels,
+	)
+
+	prometheus.MustRegister(
+		histogramVec,
+	)
+
+	return histogramVec
 }
