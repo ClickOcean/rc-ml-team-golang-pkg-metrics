@@ -16,11 +16,11 @@ func MetricsMiddleware(metrics Metrics) gin.HandlerFunc {
 
 		start := time.Now()
 		ctx.Next()
-		duration := start.Sub(start).Milliseconds()
+		duration := start.Sub(start).Seconds()
 
 		status, method, path := ctx.Writer.Status(), ctx.Request.Method, ctx.FullPath()
 
 		metrics.ObserveIncomingRequests(status, method, path)
-		metrics.ObserveRequestsDuration(float64(duration), status, method, path)
+		metrics.ObserveRequestsDuration(duration, status, method, path)
 	}
 }
