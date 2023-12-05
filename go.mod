@@ -1,4 +1,4 @@
-module gitlab.ml.rc.dating.com/rc-ml-team/golang-pkg/metrics
+module gitlab.ml.rc.dating.com/rc-ml-team/golang-pkg/metrics/v2
 
 go 1.20
 
